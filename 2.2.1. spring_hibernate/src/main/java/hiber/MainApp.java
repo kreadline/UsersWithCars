@@ -1,12 +1,11 @@
 package hiber;
 
 import hiber.config.AppConfig;
+import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import java.sql.SQLException;
-import java.util.List;
 
 public class MainApp {
    public static void main(String[] args) throws SQLException {
@@ -15,19 +14,27 @@ public class MainApp {
 
       UserService userService = context.getBean(UserService.class);
 
-      userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-      userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-      userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-      userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
+      User one = new User("one", "one", "1@");
+      Car oneCar = new Car("vaz", 2);
+      oneCar.setUser(one);
+      userService.add(one);
+      userService.add(oneCar);
 
-      List<User> users = userService.listUsers();
-      for (User user : users) {
-         System.out.println("Id = "+user.getId());
-         System.out.println("First Name = "+user.getFirstName());
-         System.out.println("Last Name = "+user.getLastName());
-         System.out.println("Email = "+user.getEmail());
-         System.out.println();
-      }
+      User two = new User("two", "two", "2@");
+      Car twoCar = new Car("nevaz", 1);
+      twoCar.setUser(two);
+      userService.add(two);
+      userService.add(twoCar);
+
+      User three = new User("three", "three", "3@");
+      Car threeCar = new Car("autovaz", 5);
+      threeCar.setUser(three);
+      userService.add(three);
+      userService.add(threeCar);
+
+      System.out.println(userService.listUsers());
+
+      System.out.println(userService.getUserByCar("nevaz", 1));
 
       context.close();
    }
